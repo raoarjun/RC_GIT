@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="6415f93a-78ae-4829-b696-330f69f269b6" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TC2_Request for a valid guestid, but matches no user" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="6415f93a-78ae-4829-b696-330f69f269b6fileName">TC2_Request-for-a-valid-guestid%2C-but-matches-no-user</con:setting></con:settings><con:testStep type="datasource" name="DataSource" id="3a5f7f4d-6b70-4d6a-a11d-93cb61ebfea9"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/TestData/TestSuite_RDGuest6.xlsx</file><worksheet>TC2</worksheet><cell>B2</cell><ignoreEmpty>true</ignoreEmpty></con:configuration></con:dataSource><con:property>guestId</con:property><con:property>extend</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="restrequest" name="NotFound - 404" id="31a0b3f9-2ad8-4919-9a93-cc06b873c221"><con:settings/><con:config service="GuestService" resourcePath="/guests/{guestId}/personalinfo" methodName="GET_GuestPersonalInfo" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="NotFound - 404" id="c9704355-4b1c-4697-9852-5e35539b1799" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://5978-B3X4N32:8089/</con:endpoint><con:request/><con:originalUri>http://5978-B3X4N32/guests/666</con:originalUri><con:assertion type="Schema Compliance" id="cb701869-e9f9-42f7-a23d-4af617a0d2aa" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Valid HTTP Status Codes" id="a1957eac-6273-431b-b3e9-c203ce575912" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>404</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="extend" value="${DataSource#extend}"/>
+  <con:entry key="guestId" value="${DataSource#guestId}"/>
+</con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script_Valid_GET_404" id="33979ddd-65f1-46ce-bafc-8fa55fe6c5c7"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+
+
+//grab the response
+log.info("Executing the test step : " + context.getCurrentStep().getLabel())
+log.info("Executing the test case : " + context.getTestCase().getLabel())
+
+def responseGuestService = testRunner.testCase.testSteps["NotFound - 404"].testRequest.response
+
+def requestStep = testRunner.testCase.getTestStepByName("NotFound - 404")
+
+log.info(requestStep.getPropertyValue("endpoint"))
+
+log.info(responseGuestService)
+
+log.info(responseGuestService.statusCode)
+
+
+def responseJSON = responseGuestService.contentAsString
+
+log.info(responseJSON)
+
+//log.info("${jsonSlurper.status.responseCode} ${jsonSlurper.status.responseStatus}")
+
+def responseStatusCode = responseGuestService.statusCode
+
+def dataSinkpropertyVal = testRunner.testCase.getTestStepByName("DataSink")
+
+def startDate = new Date() 
+log.info(startDate.format("yyyy-MM-dd HH:mm:ss SSS"))
+def sTimeStamp = startDate.format("yyyy-MM-dd HH:mm:ss SSS")
+dataSinkpropertyVal.setPropertyValue("Time of Execution", sTimeStamp)
+
+
+if (responseStatusCode == 404){
+	log.info("OK .Response")	 
+	responseStatus = "Response $responseStatusCode" 
+	dataSinkpropertyVal.setPropertyValue("Actual_Response",responseStatus) 
+	dataSinkpropertyVal.setPropertyValue("Result","PASSED") 
+}else{
+	log.info("Error in response. The error code is $responseStatusCode")
+	responseStatus = "Error in response: $responseStatusCode" 
+	dataSinkpropertyVal.setPropertyValue("Result","FAILED") 
+	dataSinkpropertyVal.setPropertyValue("Actual_Response",responseStatus)	
+}
+
+
+def jsonSlurper = new JsonSlurper().parseText(responseJSON)
+
+//verify the slurper isn't empty
+if(!(jsonSlurper.isEmpty())){
+	log.info("Response is receieved")
+	dataSinkpropertyVal.setPropertyValue("JSON_Response",responseJSON)
+}else{
+	log.info("response is not receieved")
+	dataSinkpropertyVal.setPropertyValue("JSON_Response","Empty")
+}
+
+
+
+
+</script></con:config></con:testStep><con:testStep type="datasink" name="DataSink" id="4a334079-4e62-437d-9d64-c0c0d2dd21a5"><con:settings/><con:config xsi:type="con:DataSinkStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSink type="Excel"><con:configuration><file>${projectDir}/TestData/TestSuite_RDGuest6.xlsx</file><outfile>${projectDir}/TestData/TestSuite_RDGuest6.xlsx</outfile><worksheet>TC2</worksheet><cell>E2</cell></con:configuration></con:dataSink><con:properties><con:property><con:name>EndPointURL</con:name><con:value>${NotFound - 404#Endpoint}</con:value></con:property><con:property><con:name>JSON_Response</con:name><con:value>{
+	"context": "",
+     "code": "404",
+     "message": "Not Found",
+     "status": "",
+     "secondaryCode": "",
+     "secondaryMsg": ""
+}</con:value></con:property><con:property><con:name>Actual_Response</con:name><con:value>Response 404</con:value></con:property><con:property><con:name>Result</con:name><con:value>PASSED</con:value></con:property><con:property><con:name>Time of Execution</con:name><con:value>2016-02-19 14:04:25 710</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="d820c480-35e5-4051-8834-f9a18d59fa1f"><con:settings/><con:config><dataSourceStep>DataSource</dataSourceStep><targetStep>NotFound - 404</targetStep></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>04bef227-4677-41ab-9a42-994565f606cd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>483b2cb9-8f3c-4dc5-b576-65f65e4b9fb6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase>

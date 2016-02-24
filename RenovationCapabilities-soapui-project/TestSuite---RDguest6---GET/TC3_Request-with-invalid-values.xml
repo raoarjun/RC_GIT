@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="86184d22-39ca-4885-9a7d-149ad283d806" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TC3_Request with invalid values" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="86184d22-39ca-4885-9a7d-149ad283d806fileName">TC3_Request-with-invalid-values</con:setting></con:settings><con:testStep type="datasource" name="DataSource" id="7ea523c0-9d3f-4e05-9344-5b9e246dd071"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/TestData/TestSuite_RDGuest6.xlsx</file><worksheet>TC3</worksheet><cell>B2</cell><ignoreEmpty>true</ignoreEmpty></con:configuration></con:dataSource><con:property>guestId</con:property><con:property>extend</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="restrequest" name="BadRequest - 400" id="b891030d-0b2f-4d82-bca6-efd445ca0dd2"><con:settings/><con:config service="GuestService" resourcePath="/guests/{guestId}/personalinfo" methodName="GET_GuestPersonalInfo" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="BadRequest - 400" id="c9704355-4b1c-4697-9852-5e35539b1799" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://5978-B3X4N32:8089/</con:endpoint><con:request/><con:originalUri>http://5978-B3X4N32/guests/strooo</con:originalUri><con:assertion type="Schema Compliance" id="3cf90e44-258f-473b-a0a1-ff8a4a481be1" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Valid HTTP Status Codes" id="20c5cb1f-017a-438a-bf89-b4dd5bcd213c" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>400</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="extend" value="${DataSource#extend}"/>
+  <con:entry key="guestId" value="${DataSource#guestId}"/>
+</con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script_Invalid_GET_400" id="ef67b1cd-e902-4b12-9658-d6513caff558"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+
+
+//grab the response
+log.info("Executing the test step : " + context.getCurrentStep().getLabel())
+log.info("Executing the test case : " + context.getTestCase().getLabel())
+
+def responseGuestService = testRunner.testCase.testSteps["BadRequest - 400"].testRequest.response
+
+def requestStep = testRunner.testCase.getTestStepByName("BadRequest - 400")
+
+log.info(requestStep.getPropertyValue("endpoint"))
+
+log.info(responseGuestService)
+
+log.info(responseGuestService.statusCode)
+
+
+def responseJSON = responseGuestService.contentAsString
+
+log.info(responseJSON)
+
+//log.info("${jsonSlurper.status.responseCode} ${jsonSlurper.status.responseStatus}")
+
+def responseStatusCode = responseGuestService.statusCode
+
+def dataSinkpropertyVal = testRunner.testCase.getTestStepByName("DataSink")
+
+def startDate = new Date() 
+log.info(startDate.format("yyyy-MM-dd HH:mm:ss SSS"))
+def sTimeStamp = startDate.format("yyyy-MM-dd HH:mm:ss SSS")
+dataSinkpropertyVal.setPropertyValue("Time of Execution", sTimeStamp)
+
+
+if (responseStatusCode == 400){
+	log.info("OK .Response")	 
+	responseStatus = "Response $responseStatusCode" 
+	dataSinkpropertyVal.setPropertyValue("Actual_Response",responseStatus) 
+	dataSinkpropertyVal.setPropertyValue("Result","PASSED") 
+}else{
+	log.info("Error in response. The error code is $responseStatusCode")
+	responseStatus = "Error in response: $responseStatusCode" 
+	dataSinkpropertyVal.setPropertyValue("Result","FAILED") 
+	dataSinkpropertyVal.setPropertyValue("Actual_Response",responseStatus)	
+}
+
+
+def jsonSlurper = new JsonSlurper().parseText(responseJSON)
+
+//verify the slurper isn't empty
+if(!(jsonSlurper.isEmpty())){
+	log.info("Response is receieved")
+	dataSinkpropertyVal.setPropertyValue("JSON_Response",responseJSON)
+}else{
+	log.info("response is not receieved")
+	dataSinkpropertyVal.setPropertyValue("JSON_Response","Empty")
+}
+
+
+
+
+</script></con:config></con:testStep><con:testStep type="datasink" name="DataSink" id="f09d834e-b9c8-49e5-8064-5039ecdcc173"><con:settings/><con:config xsi:type="con:DataSinkStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSink type="Excel"><con:configuration><file>${projectDir}/TestData/TestSuite_RDGuest6.xlsx</file><outfile>${projectDir}/TestData/TestSuite_RDGuest6.xlsx</outfile><worksheet>TC3</worksheet><cell>E2</cell></con:configuration></con:dataSink><con:properties><con:property><con:name>EndPointURL</con:name><con:value>${BadRequest - 400#Endpoint}</con:value></con:property><con:property><con:name>JSON_Response</con:name><con:value>{
+	"context": "",
+     "code": "400",
+     "message": "Bad Request",
+     "status": "",
+     "secondaryCode": "",
+     "secondaryMsg": ""
+}
+</con:value></con:property><con:property><con:name>Actual_Response</con:name><con:value>Response 400</con:value></con:property><con:property><con:name>Result</con:name><con:value>PASSED</con:value></con:property><con:property><con:name>Time of Execution</con:name><con:value>2016-02-19 14:04:27 243</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="ab84f9e6-61b1-4bb8-a42f-144772f25659"><con:settings/><con:config><dataSourceStep>DataSource</dataSourceStep><targetStep>BadRequest - 400</targetStep></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>afb6b47c-a809-4e5a-bcb7-5762caa1628a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c2bd55db-cd30-45b5-af52-b75c164f18c2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase>

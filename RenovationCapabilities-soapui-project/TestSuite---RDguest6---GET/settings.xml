@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite id="9f4b6292-52bb-4843-99e7-44f4880999ee" name="TestSuite - RDguest6 - GET" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="9f4b6292-52bb-4843-99e7-44f4880999eefileName">TestSuite---RDguest6---GET</con:setting></con:settings><con:runType>SEQUENTIAL</con:runType><con:properties/><con:reportParameters/></con:testSuite>
