@@ -1,0 +1,3 @@
+TestCase_VALID_POST_201.xml
+IllegalValues_AddressTypeNotIncluded_POST_400.xml
+ResourceAlreadyExist_POST_409.xml

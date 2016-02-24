@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="9bae5863-bbe6-435d-ba5d-9ab09b8e7f52" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TestCase_Valid_GET_200" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="9bae5863-bbe6-435d-ba5d-9ab09b8e7f52fileName">TestCase_Valid_GET_200</con:setting></con:settings><con:testStep type="datasource" name="DataSource_Valid_GET_200" id="2df12fc7-1afa-4db1-b8f7-a6d22a889bf5"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/TestData/TestSuite_RDGuest7.xls</file><worksheet>TestCase_Valid_GET_200</worksheet><cell>A2</cell><ignoreEmpty>false</ignoreEmpty></con:configuration></con:dataSource><con:property>GuestID</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="restrequest" name="GET_GuestPersonalInfo" id="cb2299b5-45e6-404d-83f6-565bfacca3ef"><con:settings/><con:config service="GuestService" resourcePath="/guests/{guestId}/personalinfo" methodName="GET_GuestPersonalInfo" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GET_GuestPersonalInfo - Request_PersonalInfo" id="9b6cddb6-343b-4d65-ab54-11eaf1114fe7" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://hflapdmx02dv.hilton.com:9763</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><entry key="guestId" value="${DataSource_Valid_GET_200#GuestID}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>guestId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script_Valid_GET_200" id="c2574e38-c354-4eee-8b0f-a5ab39c13c4f"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+
+
+//grab the response
+log.info("Executing the test step : " + context.getCurrentStep().getLabel())
+log.info("Executing the test case : " + context.getTestCase().getLabel())
+
+def responseGuestService = testRunner.testCase.testSteps["GET_GuestPersonalInfo"].testRequest.response
+
+def requestStep = testRunner.testCase.getTestStepByName("GET_GuestPersonalInfo")
+
+log.info(requestStep.getPropertyValue("endpoint"))
+
+log.info(responseGuestService)
+
+log.info(responseGuestService.statusCode)
+
+def responseJSON = responseGuestService.contentAsString
+
+//log.info("${jsonSlurper.status.responseCode} ${jsonSlurper.status.responseStatus}")
+
+def responseStatusCode = responseGuestService.statusCode
+
+def dataSinkpropertyVal = testRunner.testCase.getTestStepByName("DataSink_Valid_GET_200")
+
+def startDate = new Date() 
+log.info(startDate.format("yyyy-MM-dd HH:mm:ss SSS"))
+def sTimeStamp = startDate.format("yyyy-MM-dd HH:mm:ss SSS")
+dataSinkpropertyVal.setPropertyValue("Time of Execution", sTimeStamp)
+
+if (responseStatusCode == 200){
+	log.info("OK .Response")	 
+	responseStatus = "Response OK $responseStatus" 
+	dataSinkpropertyVal.setPropertyValue("ResponseStatus",responseStatus) 
+	dataSinkpropertyVal.setPropertyValue("Result","PASSED") 
+}else{
+	log.info("Error in response. The error code is $responseStatus")
+	responseStatus = "Error in response: $responseStatus" 
+	dataSinkpropertyVal.setPropertyValue("Result","FAILED") 
+	dataSinkpropertyVal.setPropertyValue("ResponseStatus",responseStatus)	
+}
+
+def jsonSlurper = new JsonSlurper().parseText(responseJSON)
+
+//verify the slurper isn't empty
+if(!(jsonSlurper.isEmpty())){
+	log.info("Response is receieved")
+	dataSinkpropertyVal.setPropertyValue("ResponseJSON",responseJSON)
+}else{
+	log.info("response is not receieved")
+	dataSinkpropertyVal.setPropertyValue("ResponseJSON","Empty")
+}
+
+
+
+
+</script></con:config></con:testStep><con:testStep type="datasink" name="DataSink_Valid_GET_200" id="98babd23-9968-4eac-b218-c1732898d86a"><con:settings/><con:config xsi:type="con:DataSinkStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSink type="Excel"><con:configuration><file>${projectDir}/TestData/TestSuite_RDGuest7.xls</file><outfile>${projectDir}/TestData/TestSuite_RDGuest7.xls</outfile><worksheet>TestCase_Valid_GET_200</worksheet><cell>C2</cell></con:configuration></con:dataSink><con:properties><con:property><con:name>Response_Status</con:name><con:value/></con:property><con:property><con:name>EndpointURL</con:name><con:value>${GET_GuestPersonalInfo#Endpoint}</con:value></con:property><con:property><con:name>Time of Execution</con:name><con:value/></con:property><con:property><con:name>ResponseJSON</con:name><con:value/></con:property><con:property><con:name>Result</con:name><con:value/></con:property></con:properties></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="a202b564-2dfb-4c7a-ba30-38fd014e0aa9"><con:settings/><con:config><dataSourceStep>DataSource</dataSourceStep><targetStep>GET_GuestPersonalInfo - Request_PersonalInfo</targetStep></con:config></con:testStep><con:properties/><con:reportParameters/></con:testCase>

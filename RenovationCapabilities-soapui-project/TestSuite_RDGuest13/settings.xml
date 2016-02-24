@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite id="4eb69c5d-4b64-40fa-9445-18c7fa018ceb" name="TestSuite_RDGuest13" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="4eb69c5d-4b64-40fa-9445-18c7fa018cebfileName">TestSuite_RDGuest13</con:setting></con:settings><con:runType>SEQUENTIAL</con:runType><con:properties/><con:reportParameters/></con:testSuite>

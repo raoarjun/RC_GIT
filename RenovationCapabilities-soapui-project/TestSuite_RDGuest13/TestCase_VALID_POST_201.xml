@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="54cc3191-110e-4a40-8b80-1388a3a8cc2a" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TestCase_VALID_POST_201" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="54cc3191-110e-4a40-8b80-1388a3a8cc2afileName">TestCase_VALID_POST_201</con:setting></con:settings><con:testStep type="datasource" name="DataSource" id="d5fad26f-05fb-409c-bcec-59c83ca55206"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="restrequest" name="POST_CreateAddressForGuest" id="82d27de2-0b18-4d64-a220-d81c47d6b30b"><con:settings/><con:config service="GuestService" resourcePath="/guests/{guestId}/personalinfo/addresses" methodName="POST_CreateAddressForGuest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="POST_CreateAddressForGuest" id="27b7d701-474c-4e23-b06c-c98583a459d6" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://hflapdmx02dv.hilton.com:9763</con:endpoint><con:request>{
+"addressId":"",
+"addressType":"",
+"preferred":"",
+"addressLine1":"",	
+"addressLine2":"",	
+"addressLine3":"",
+"city":"",
+"state":"",
+"country":"",
+"zip":"",
+"fullZip":"",
+"cityCode":"",
+"mailCode":"",
+"company":"",
+}</con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:parameterOrder><con:entry>guestId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="2a07db8d-8e9e-4733-99ce-85c6d4aea5cd"><con:settings/><con:config><script/></con:config></con:testStep><con:testStep type="datasink" name="DataSink" id="207e137a-a4bf-46c1-8c40-ecbf7b5d62f1"><con:settings/><con:config xsi:type="con:DataSinkStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties/></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="1c7b128b-6dda-4db7-ad24-08f31727d5d8"><con:settings/><con:config><dataSourceStep/><targetStep/></con:config></con:testStep><con:properties/><con:reportParameters/></con:testCase>

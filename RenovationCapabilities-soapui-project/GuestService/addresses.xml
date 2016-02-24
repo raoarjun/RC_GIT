@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:resource name="addresses" path="/guests/{guestId}/personalinfo/addresses" id="60700ea6-610c-4cf3-b463-bf25ee185409" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="60700ea6-610c-4cf3-b463-bf25ee185409fileName">addresses</con:setting></con:settings><con:parameters><con:parameter><con:name>guestId</con:name><con:value>guestId</con:value><con:style>TEMPLATE</con:style><con:default>guestId</con:default></con:parameter></con:parameters><con:method name="POST_CreateAddressForGuest" id="802dfdec-9c8d-4689-9e37-ab70577501b6" method="POST"><con:settings/><con:parameters/><con:request name="Request_CreateAddressForGuest" id="27b7d701-474c-4e23-b06c-c98583a459d6" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://hflapdmx02dv.hilton.com:9763</con:endpoint><con:request>{
+"addressId":"",
+"addressType":"",
+"preferred":"",
+"addressLine1":"",	
+"addressLine2":"",	
+"addressLine3":"",
+"city":"",
+"state":"",
+"country":"",
+"zip":"",
+"fullZip":"",
+"cityCode":"",
+"mailCode":"",
+"company":"",
+}</con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><entry key="guestId" value="guestID" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>guestId</con:entry></con:parameterOrder></con:request></con:method></con:resource>

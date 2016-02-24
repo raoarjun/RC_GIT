@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="13a9966c-5a2e-4634-83be-c269f2487c8f" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="ResourceAlreadyExist_POST_409" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="13a9966c-5a2e-4634-83be-c269f2487c8ffileName">ResourceAlreadyExist_POST_409</con:setting></con:settings><con:properties/><con:reportParameters/></con:testCase>

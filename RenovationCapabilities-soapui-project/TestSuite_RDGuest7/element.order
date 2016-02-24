@@ -1,0 +1,3 @@
+TestCase_Valid_GET_200.xml
+TestCase_ResourceAlreadyExists_GET_404.xml
+TestCase_IllegalValueCase_GET_400.xml

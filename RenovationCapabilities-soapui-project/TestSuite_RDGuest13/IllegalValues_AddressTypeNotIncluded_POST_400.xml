@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="0f831461-ce15-4233-936d-a4fa00fb2fdd" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="IllegalValues_AddressTypeNotIncluded_POST_400" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="0f831461-ce15-4233-936d-a4fa00fb2fddfileName">IllegalValues_AddressTypeNotIncluded_POST_400</con:setting></con:settings><con:properties/><con:reportParameters/></con:testCase>
